@@ -108,7 +108,7 @@ typeorm: {
 ```bash
 $ npm i
 $ npm run dev
-$ open http://localhost:8001/
+$ open http://localhost:8011/
 ```
 
 注： `npm i`如果安装失败可以尝试使用[cnpm](https://developer.aliyun.com/mirror/NPM?from=tnpm)，或者切换您的镜像源，推荐使用[pnpm](https://pnpm.io/)
