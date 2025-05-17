@@ -28,20 +28,6 @@ export class FinanceGroupLeaderServiceFeeEntityController extends BaseController
   financeGroupLeaderServiceFeeService: FinanceGroupLeaderServiceFeeService;
 
   /**
-   * Get paginated list of group leader service fee records
-   */
-  @Get('/order-list')
-  @Validate()
-  async orderList(@Query() query: FinanceGroupLeaderServiceFeeQueryDTO) {
-    const result = await this.financeGroupLeaderServiceFeeService.list(query);
-    return {
-      code: 200,
-      message: 'Success',
-      data: result,
-    };
-  }
-
-  /**
    * Export group leader service fee records to Excel
    */
   @Get('/export')
