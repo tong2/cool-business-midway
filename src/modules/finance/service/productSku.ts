@@ -104,7 +104,7 @@ export class ProductSkuService extends BaseService {
   }
 
   /**
-   * 从 Excel 数据导入商品SKU表记录
+   * 从 Excel 数据导入 SKU 记录，根据 product_id 和 sku_name 检查重复，更新或新增
    * @param data - 解析的 Excel 数据
    */
   async import(data: any[]) {
@@ -119,25 +119,42 @@ export class ProductSkuService extends BaseService {
       return value;
     };
 
-    const entities = data.map(item => {
+    const entities: ProductSkuEntity[] = [];
+
+    for (const item of data) {
+      const productId = safeTrim(item['宝贝ID']);
+      const skuName = safeTrim(item['SKU名称']);
+      if (!productId || !skuName) continue; // 跳过无效 product_id 或 sku_name
+
+      // 检查是否存在 product_id 和 sku_name 的记录
+      const existingRecord = await this.productSkuModel.findOne({
+        where: {
+          product_id: productId,
+          sku_name: skuName,
+        },
+      });
+
       const entity = new ProductSkuEntity();
-
-      // 字符串字段
-      entity.product_id = safeTrim(item['宝贝ID']) ?? null;
-      entity.sku_name = safeTrim(item['SKU名称']) ?? null;
+      entity.product_id = productId;
+      entity.sku_name = skuName;
       entity.image = safeTrim(item['图片']) ?? null;
-
-      // 数值字段
       entity.original_price = parseFloat(item['原价']) || null;
       entity.calculated_price = parseFloat(item['计算价格']) || null;
       entity.stock = parseInt(item['库存'], 10) || null;
       entity.manual_unit_price = parseFloat(item['人工单价']) || null;
 
-      return entity;
-    });
+      if (existingRecord) {
+        entity.id = existingRecord.id; // 设置 id 以更新现有记录
+      }
 
-    // 批量保存
-    await this.productSkuModel.save(entities);
+      entities.push(entity);
+    }
+
+    // 批量保存（插入新记录，更新现有记录）
+    if (entities.length > 0) {
+      await this.productSkuModel.save(entities, { chunk: 1000 });
+    }
+
     return { success: true, count: entities.length };
   }
 }

@@ -38,10 +38,6 @@ export class ProductMainService extends BaseService {
       conditions.push('main.product_id LIKE ?');
       parameters.product_id = `%${product_id}%`;
     }
-    if (keyWord) {
-      conditions.push('main.product_id LIKE ?');
-      parameters.keyWord = `%${keyWord}%`;
-    }
     if (title) {
       conditions.push('main.title LIKE ?');
       parameters.title = `%${title}%`;
