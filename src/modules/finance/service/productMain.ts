@@ -81,7 +81,7 @@ export class ProductMainService extends BaseService {
         main.shop_link,
         main.category_id,
         main.category_name,
-        sku.id AS sku_id,
+        sku.id AS id,
         sku.product_id AS product_id,
         sku.sku_name,
         sku.image AS sku_image,
@@ -138,7 +138,6 @@ export class ProductMainService extends BaseService {
       { key: 'shop_link', label: '店铺链接' },
       { key: 'category_id', label: '类目ID' },
       { key: 'category_name', label: '类目名' },
-      { key: 'sku_id', label: 'SKU ID' },
       { key: 'sku_name', label: 'SKU名称' },
       { key: 'sku_image', label: 'SKU图片' },
       { key: 'original_price', label: '原价' },
@@ -155,7 +154,7 @@ export class ProductMainService extends BaseService {
         // 处理数值字段
         if (header.key === 'price' || header.key === 'original_price' || header.key === 'calculated_price' || header.key === 'manual_unit_price') {
           row[header.key] = row[header.key] ? parseFloat(row[header.key]) : '';
-        } else if (header.key === 'sales_volume' || header.key === 'stock' || header.key === 'sku_id') {
+        } else if (header.key === 'sales_volume' || header.key === 'stock') {
           row[header.key] = row[header.key] ? parseInt(row[header.key], 10) : '';
         }
       });
