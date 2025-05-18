@@ -1,13 +1,13 @@
 import { BaseEntity } from '@cool-midway/core';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import {
-  FinanceGroupLeaderServiceFeeEntity
-} from '../entity/groupLeaderServiceFee';
+  ProductMainEntity
+} from '../entity/productMain';
 import { Rule, RuleType } from '@midwayjs/validate';
 /**
- * 团长服务费表
+ * 商品主表
  */
-export class FinanceGroupLeaderServiceFeeQueryDTO extends FinanceGroupLeaderServiceFeeEntity {
+export class ProductMainQueryDTO extends ProductMainEntity {
 
   @Rule(RuleType.number().optional())
   page?: number;
