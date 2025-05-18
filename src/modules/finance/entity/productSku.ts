@@ -10,13 +10,13 @@ export class ProductSkuEntity extends BaseEntity {
   @PrimaryGeneratedColumn({ comment: '主键ID' })
   id: number;
 
-  @Column({ comment: '宝贝ID', length: 50 })
+  @Column({ comment: '宝贝ID', length: 150 })
   product_id: string;
 
   @Column({ comment: 'sku名称', nullable: true, length: 100 })
   sku_name: string;
 
-  @Column({ comment: '图片', nullable: true, length: 200 })
+  @Column({ comment: '图片', nullable: true, length: 500 })
   image: string;
 
   @Column({

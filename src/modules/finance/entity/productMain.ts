@@ -9,7 +9,7 @@ import { Rule, RuleType } from '@midwayjs/validate';
 @Entity('product_main')
 export class ProductMainEntity extends BaseEntity {
 
-  @PrimaryColumn({ comment: '宝贝ID', length: 50 })
+  @PrimaryColumn({ comment: '宝贝ID', length: 150 })
   @Rule(RuleType.string().optional())
   product_id: string;
 
@@ -17,11 +17,11 @@ export class ProductMainEntity extends BaseEntity {
   @Rule(RuleType.string().optional())
   title: string;
 
-  @Column({ comment: '宝贝链接' ,nullable: true, length: 200 })
+  @Column({ comment: '宝贝链接' ,nullable: true, length: 500 })
   @Rule(RuleType.string().optional())
   product_link: string;
 
-  @Column({ comment: '图片地址' ,nullable: true, length: 200 })
+  @Column({ comment: '图片地址' ,nullable: true, length: 500 })
   @Rule(RuleType.string().optional())
   image_url: string;
 
@@ -43,11 +43,11 @@ export class ProductMainEntity extends BaseEntity {
   @Rule(RuleType.string().optional())
   shop_name: string;
 
-  @Column({ comment: '店铺链接' ,nullable: true, length: 200 })
+  @Column({ comment: '店铺链接' ,nullable: true, length: 5000 })
   @Rule(RuleType.string().optional())
   shop_link: string;
 
-  @Column({ comment: '类目ID', nullable: true, length: 50 })
+  @Column({ comment: '类目ID', nullable: true, length: 150 })
   @Rule(RuleType.string().optional())
   category_id: string;
 

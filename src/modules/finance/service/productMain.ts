@@ -134,7 +134,7 @@ export class ProductMainService extends BaseService {
       { key: 'shop_link', label: '店铺链接' },
       { key: 'category_id', label: '类目ID' },
       { key: 'category_name', label: '类目名' },
-      { key: 'sku_name', label: 'SKU名称' },
+      { key: 'sku_name', label: 'sku名称' },
       { key: 'sku_image', label: 'SKU图片' },
       { key: 'original_price', label: '原价' },
       { key: 'calculated_price', label: '计算价格' },

@@ -83,7 +83,7 @@ export class ProductSkuService extends BaseService {
     // 定义导出表头，使用中文标签
     const headers = [
       { key: 'product_id', label: '宝贝ID' },
-      { key: 'sku_name', label: 'SKU名称' },
+      { key: 'sku_name', label: 'sku名称' },
       { key: 'image', label: '图片' },
       { key: 'original_price', label: '原价' },
       { key: 'calculated_price', label: '计算价格' },
@@ -116,16 +116,18 @@ export class ProductSkuService extends BaseService {
         // 移除问题字符
         return value.trim().replace(/[\0\b\n\r\t\\'"\x1a]/g, '');
       }
-      return value;
+      // 处理非字符串值
+      return value?.toString ? value.toString().trim() : null;
     };
-
+  
     const entities: ProductSkuEntity[] = [];
-
     for (const item of data) {
+      console.log("item:" + JSON.stringify(item));
       const productId = safeTrim(item['宝贝ID']);
-      const skuName = safeTrim(item['SKU名称']);
+      const skuName = safeTrim(item['sku名称']);
+      console.log(productId + "  - " + skuName);
       if (!productId || !skuName) continue; // 跳过无效 product_id 或 sku_name
-
+  
       // 检查是否存在 product_id 和 sku_name 的记录
       const existingRecord = await this.productSkuModel.findOne({
         where: {
@@ -133,28 +135,33 @@ export class ProductSkuService extends BaseService {
           sku_name: skuName,
         },
       });
-
+  
       const entity = new ProductSkuEntity();
       entity.product_id = productId;
       entity.sku_name = skuName;
-      entity.image = safeTrim(item['图片']) ?? null;
+      entity.image = item['图片']?.hyperlink ? safeTrim(item['图片'].hyperlink) : null;
       entity.original_price = parseFloat(item['原价']) || null;
       entity.calculated_price = parseFloat(item['计算价格']) || null;
       entity.stock = parseInt(item['库存'], 10) || null;
-      entity.manual_unit_price = parseFloat(item['人工单价']) || null;
-
+      entity.manual_unit_price = parseFloat(item['人工单价']) || null; // 修复
+  
       if (existingRecord) {
         entity.id = existingRecord.id; // 设置 id 以更新现有记录
       }
-
+  
       entities.push(entity);
     }
-
+  
+    // 调试日志
+    entities.forEach((entity, index) => {
+      console.log(`Entity ${index}:`, JSON.stringify(entity, null, 2));
+    });
+  
     // 批量保存（插入新记录，更新现有记录）
     if (entities.length > 0) {
       await this.productSkuModel.save(entities, { chunk: 1000 });
     }
-
+  
     return { success: true, count: entities.length };
   }
 }
